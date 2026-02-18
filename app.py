@@ -8,6 +8,11 @@ st.set_page_config(
     layout="wide"
 )
 
+# Titolo principale (assicurati che non ci sia spazio a sinistra)
+st.title("⚖️ Cybercrime Advisor Pro")
+st.markdown("### Analisi giuridica avanzata dei reati informatici")
+st.divider()
+
 # CSS Personalizzato per un look moderno
 st.markdown("""
     <style>
@@ -195,4 +200,5 @@ else:
                 st.write(f"- **{v['titolo']}** (Codice: {k})")
     else:
         st.info("Benvenuto. Seleziona una categoria o usa la barra di ricerca a sinistra per analizzare un reato.")
+
 
