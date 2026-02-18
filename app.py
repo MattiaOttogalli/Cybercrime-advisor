@@ -142,6 +142,8 @@ struttura_menu = {
 with st.sidebar:
     st.title("Centro Ricerca")
     query = st.text_input("🔍 Cerca parola chiave:")
+    if st.button("🔄 Reset Applicazione"):
+        st.rerun()
     st.markdown("---")
     st.info("Strumento di supporto legale basato sugli ultimi aggiornamenti normativi 2025/2026.")
 
@@ -223,6 +225,7 @@ else:
                 st.write(f"- **{v['titolo']}** (Codice: {k})")
     else:
         st.info("Benvenuto. Seleziona una categoria o usa la barra di ricerca a sinistra per analizzare un reato.")
+
 
 
 
