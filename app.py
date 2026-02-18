@@ -3,7 +3,7 @@ import pandas as pd
 
 # 1. CONFIGURAZIONE PAGINA E STILE
 st.set_page_config(
-    page_title="Cybercrime Advisor Pro",
+    page_title="Cybercrime Advisor",
     page_icon="⚖️",
     layout="wide"
 )
@@ -123,7 +123,6 @@ struttura_menu = {
 
 # 4. SIDEBAR (Ricerca e Filtri)
 with st.sidebar:
-    st.image("https://img.icons8.com/ios-filled/100/2980b9/checked-identification-documents.png", width=80)
     st.title("Centro Ricerca")
     query = st.text_input("🔍 Cerca parola chiave:")
     st.markdown("---")
@@ -196,3 +195,4 @@ else:
                 st.write(f"- **{v['titolo']}** (Codice: {k})")
     else:
         st.info("Benvenuto. Seleziona una categoria o usa la barra di ricerca a sinistra per analizzare un reato.")
+
