@@ -1,236 +1,154 @@
 import streamlit as st
-import pandas as pd
 
-# 1. CONFIGURAZIONE PAGINA E STILE
-st.set_page_config(
-    page_title="Cybercrime Advisor",
-    page_icon="⚖️",
-    layout="wide"
-)
+# Configurazione della pagina
+st.set_page_config(page_title="Cybercrime Help Desk", page_icon="🚨", layout="wide")
 
-# Titolo principale (assicurati che non ci sia spazio a sinistra)
-st.title("⚖️ Cybercrime Advisor")
-st.markdown("### Analisi giuridica dei reati informatici")
-st.divider()
-
-# CSS Personalizzato per un look moderno
-st.markdown("""
-    <style>
-    .main { background-color: #f8f9fa; }
-    .stAlert { border-radius: 12px; }
-    div[data-testid="stMetricValue"] { font-size: 1.8rem; color: #1f77b4; }
-    </style>
-    """, unsafe_allow_html=True)
-
-# 2. DATABASE COMPLETO DEI REATI (Dal tuo Notebook)
+# Database esteso con i dati del file Cybercrime_advisor.ipynb
 database_reati = {
     '615-ter': {
         'titolo': "Accesso abusivo ad un sistema informatico protetto",
-        'pena_base': "Fino a 3 anni",
-        'gravita': 3,
-        'multa': "Non prevista",
-        'note': "Il reato è commesso nel momento in cui si entra in un sistema informatico senza il consenso del proprietario."
+        'identikit': "Qualcuno è entrato nel tuo account, PC o smartphone senza autorizzazione.",
+        'soluzione': [
+            "Cambia immediatamente la password da un dispositivo diverso.",
+            "Attiva l'autenticazione a due fattori (2FA).",
+            "Controlla i 'dispositivi connessi' nelle impostazioni dell'account e disconnetti quelli sospetti."
+        ],
+        'denuncia': "Art. 615-ter c.p.. Salva i log di accesso e le email di avviso di 'nuovo accesso'. Recati alla Polizia Postale.",
+        'prevenzione': "Non usare la stessa password per più servizi e non comunicare mai codici OTP a terzi."
     },
     '615-aggravato': {
         'titolo': "Accesso abusivo da parte di Pubblico Ufficiale",
-        'pena_base': "Aumento fino a 1/3",
-        'gravita': 4,
-        'multa': "Non prevista",
-        'note': "Aggravante specifica prevista per chi riveste la qualifica di Pubblico Ufficiale o incaricato di pubblico servizio."
+        'identikit': "Accesso illecito compiuto da un soggetto con poteri pubblici o incaricato di pubblico servizio.",
+        'soluzione': ["Richiedi un audit interno se l'accesso è avvenuto in ambito lavorativo/istituzionale."],
+        'denuncia': "Fattispecie aggravata dell'Art. 615-ter. Necessaria segnalazione formale all'ente di appartenenza e querela.",
+        'prevenzione': "Monitoraggio rigoroso degli accessi ai database sensibili tramite log inalterabili."
     },
     '635-bis': {
-        'titolo': "Danneggiamento di dati, informazioni o programmi informatici",
-        'pena_base': "Da 2 a 6 anni",
-        'gravita': 6,
-        'multa': "Non prevista",
-        'note': "Il reato sussiste anche se i dati sono recuperabili. Il ripristino tecnico non esclude il reato."
-    },
-    '635-quater': {
-        'titolo': "Danneggiamento di sistemi informatici o telematici",
-        'pena_base': "Da 2 a 6 anni (fino a 8)",
-        'gravita': 6,
-        'multa': "Non prevista",
-        'note': "Riguarda l'integrità del sistema hardware o della rete stessa."
+        'titolo': "Danneggiamento di dati e programmi",
+        'identikit': "I tuoi file sono stati cancellati, alterati o resi inutilizzabili (es. Ransomware).",
+        'soluzione': [
+            "Scollega il disco per evitare ulteriori sovrascritture.",
+            "Tenta il ripristino da un backup precedente.",
+            "Non pagare riscatti: contatta un esperto di data recovery."
+        ],
+        'denuncia': "Art. 635-bis c.p.. Il reato sussiste anche se i dati sono recuperabili. Fornisci i file log del sistema.",
+        'prevenzione': "Mantieni backup regolari 'offline' (non collegati permanentemente al PC)."
     },
     '635-ter': {
         'titolo': "Danneggiamento di sistemi di Pubblica Utilità",
-        'pena_base': "Da 3 a 8 anni",
-        'gravita': 8,
-        'multa': "Non prevista",
-        'note': "Fattispecie aggravata quando il sistema è di interesse pubblico o essenziale."
+        'identikit': "Attacco che colpisce infrastrutture critiche (sanità, energia, trasporti).",
+        'soluzione': ["Attivazione immediata del piano di Business Continuity e Disaster Recovery."],
+        'denuncia': "Art. 635-ter c.p.. Reato di estrema gravità. Segnalazione obbligatoria al CNAIPIC.",
+        'prevenzione': "Segregazione delle reti industriali (OT) da quelle amministrative (IT)."
+    },
+    '635-quater': {
+        'titolo': "Danneggiamento di sistemi informatici",
+        'identikit': "Interruzione o grave rallentamento del funzionamento di un intero sistema o rete.",
+        'soluzione': ["Analisi del traffico di rete per identificare attacchi DoS/DDoS."],
+        'denuncia': "Art. 635-quater c.p.. Raccogli prove del blocco del servizio (screenshot di errori, log server).",
+        'prevenzione': "Uso di sistemi anti-DDoS e firewall di nuova generazione."
     },
     '640': {
         'titolo': "Truffa",
-        'pena_base': "Da 0.5 a 3 anni",
-        'gravita': 3,
-        'multa': "Da 51€ a 1.032€",
-        'note': "Art. 640 c.p. - Prevede anche multe da 51 a 1032 euro."
+        'identikit': "Sei stato raggirato online per fornire beni o denaro (es. finto annuncio di vendita).",
+        'soluzione': ["Interrompi ogni contatto con il soggetto. Non inviare altro denaro."],
+        'denuncia': "Art. 640 c.p.. Conserva chat, numeri di telefono e ricevute di pagamento.",
+        'prevenzione': "Diffida di offerte troppo vantaggiose e verifica l'attendibilità dei venditori."
     },
     '640-bis': {
-        'titolo': "Truffa aggravata per erogazioni pubbliche",
-        'pena_base': "Da 2 a 7 anni",
-        'gravita': 7,
-        'multa': "Non prevista",
-        'note': "Specifico per l'indebito conseguimento di contributi o finanziamenti pubblici."
+        'titolo': "Truffa per erogazioni pubbliche",
+        'identikit': "Uso di raggiri per ottenere indebitamente finanziamenti o bonus dallo Stato.",
+        'soluzione': ["Autodenuncia o rettifica immediata presso l'ente erogatore per limitare le conseguenze penali."],
+        'denuncia': "Aggravante dell'Art. 640. Spesso rilevata d'ufficio dalla Guardia di Finanza.",
+        'prevenzione': "Verifica scrupolosa dei requisiti prima di inoltrare istanze telematiche."
     },
     '640-ter': {
         'titolo': "Frode informatica",
-        'pena_base': "Da 2 a 6 anni",
-        'gravita': 6,
-        'multa': "da 600€ a 3000€ ",
-        'note': "Alterazione del funzionamento di un sistema per procurare a sé o ad altri un ingiusto profitto."
+        'identikit': "Manipolazione del sistema per sottrarre denaro (es. bonifico partito a tua insaputa).",
+        'soluzione': [
+            "Blocca immediatamente carte e conti correnti tramite numero verde bancario.",
+            "Disconosci le operazioni fraudolente.",
+            "Controlla il PC alla ricerca di 'Keylogger' o malware bancari."
+        ],
+        'denuncia': "Art. 640-ter c.p.. Allega l'estratto conto e la lista dei dispositivi autorizzati dall'app bancaria.",
+        'prevenzione': "Non cliccare su link in SMS/Email (Smishing/Phishing) e usa app bancarie con biometria."
     },
-    '648-bis': {
-        'titolo': "Riciclaggio di beni",
-        'pena_base': "Da 4 a 12 anni",
-        'gravita': 12,
-        'multa': "da 5000€ a 25000€",
-        'note': "Trasferimento di denaro o beni di provenienza delittuosa per ostacolarne l'identificazione."
-    },
-    '648-ter': {
-        'titolo': "Autoriciclaggio",
-        'pena_base': "Da 2 a 8 anni",
-        'gravita': 8,
-        'multa': "da 5000€ a 25000€",
-        'note': "Impiego di proventi delittuosi in attività economiche o finanziarie da parte dell'autore del reato presupposto."
+    '648-bis/ter': {
+        'titolo': "Riciclaggio e Autoriciclaggio",
+        'identikit': "Utilizzo di denaro proveniente da reati informatici per altre attività economiche.",
+        'soluzione': ["Blocco dei flussi sospetti e segnalazione al Responsabile Antiriciclaggio."],
+        'denuncia': "Art. 648-bis/ter c.p.. Sanzioni pesantissime che includono la confisca dei beni.",
+        'prevenzione': "Procedure di KYC (Know Your Customer) rigorose e tracciamento dei pagamenti digitali."
     },
     '491-bis': {
         'titolo': "Falsità in un documento informatico",
-        'pena_base': "Equiparata al cartaceo",
-        'gravita': 4,
-        'multa': "Non prevista",
-        'note': "Il documento informatico ha lo stesso valore probatorio dell'atto pubblico o della scrittura privata."
+        'identikit': "Firma digitale rubata o creazione di documenti informatici falsi con valore legale.",
+        'soluzione': ["Revoca immediata del certificato di firma digitale presso il certificatore (es. Aruba, InfoCert)."],
+        'denuncia': "Art. 491-bis c.p.. Le pene sono equiparate al falso in atto pubblico cartaceo.",
+        'prevenzione': "Proteggi il token/smart card di firma con PIN complessi e non lasciarli mai incustoditi."
     },
     'AI-insidioso': {
-        'titolo': "Crimine commesso con IA (AI Act 2025)",
-        'pena_base': "Aggravante Art. 61",
-        'gravita': 5,
-        'multa': "Non prevista",
-        'note': "Uso di sistemi di IA come mezzo insidioso per facilitare la commissione del reato."
+        'titolo': "Reato commesso tramite IA",
+        'identikit': "Uso di Deepfake, malware generati da IA o bot per compiere illeciti.",
+        'soluzione': ["Uso di software di rilevamento 'Synthetic Media' per provare la falsità del contenuto."],
+        'denuncia': "Aggravante specifica (Art. 61 n. 11-undecies) e normativa AI Act 2026.",
+        'prevenzione': "Formazione del personale sul riconoscimento di audio/video generati da IA (Social Engineering)."
     }
 }
 
-# 3. STRUTTURA A CASCATA (Menu Dinamici)
-struttura_menu = {
-    'Accesso abusivo': {
-        'Accesso standard (Art. 615-ter)': '615-ter',
-        'Soggetto Pubblico Ufficiale': '615-aggravato'
-    },
-    'Danneggiamento': {
-        'Dati e programmi (635-bis)': '635-bis',
-        'Sistemi informatici (635-quater)': '635-quater',
-        'Pubblica Utilità (635-ter)': '635-ter'
-    },
-    'Truffa e Frode': {
-        'Truffa semplice (640)': '640',
-        'Truffa per erogazioni pubbliche (640-bis)': '640-bis',
-        'Frode informatica (640-ter)': '640-ter'
-    },
-    'Riciclaggio': {
-        'Riciclaggio (648-bis)': '648-bis',
-        'Autoriciclaggio (648-ter)': '648-ter'
-    },
-    'Falsità Documentale': {
-        'Documento informatico (491-bis)': '491-bis'
-    },
-    'Intelligenza Artificiale': {
-        'Utilizzo IA come mezzo (AI Act)': 'AI-insidioso'
-    }
+# --- INTERFACCIA STREAMLIT ---
+st.title("🚨 Cybercrime Incident Response Advisor")
+st.markdown("Basato sul Codice Penale e sulle direttive di sicurezza informatica 2026.")
+
+# Mappatura colloquiale per l'utente
+problema_input = st.selectbox(
+    "Quale problema hai riscontrato?",
+    ["Seleziona...", 
+     "Accesso non autorizzato ai miei account/dispositivi",
+     "I miei dati/file sono stati cancellati o criptati",
+     "Attacco a un sistema di pubblica utilità o infrastruttura",
+     "Blocco o rallentamento della rete aziendale",
+     "Truffa subita durante un acquisto online",
+     "Furto di denaro tramite manipolazione bancaria/informatica",
+     "Manipolazione di documenti informatici o firme digitali",
+     "Uso illecito di denaro di dubbia provenienza",
+     "Contenuto falso generato da Intelligenza Artificiale (Deepfake)"]
+)
+
+# Logica di associazione
+mapping = {
+    "Accesso non autorizzato ai miei account/dispositivi": "615-ter",
+    "I miei dati/file sono stati cancellati o criptati": "635-bis",
+    "Attacco a un sistema di pubblica utilità o infrastruttura": "635-ter",
+    "Blocco o rallentamento della rete aziendale": "635-quater",
+    "Truffa subita durante un acquisto online": "640",
+    "Furto di denaro tramite manipolazione bancaria/informatica": "640-ter",
+    "Manipolazione di documenti informatici o firme digitali": "491-bis",
+    "Uso illecito di denaro di dubbia provenienza": "648-bis/ter",
+    "Contenuto falso generato da Intelligenza Artificiale (Deepfake)": "AI-insidioso"
 }
 
-# 4. SIDEBAR (Ricerca e Filtri)
-with st.sidebar:
-    st.title("Centro Ricerca")
-    query = st.text_input("🔍 Cerca parola chiave:")
-    if st.button("🔄 Reset Applicazione"):
-        st.rerun()
-    st.markdown("---")
-    st.info("Strumento di supporto legale basato sugli ultimi aggiornamenti normativi 2025/2026.")
+codice_scelto = mapping.get(problema_input)
 
-# 5. LOGICA DI SELEZIONE
-st.subheader("Configurazione del Caso")
-c1, c2 = st.columns(2)
-
-with c1:
-    categoria = st.selectbox("Seleziona Categoria:", ["Seleziona..."] + list(struttura_menu.keys()))
-
-with c2:
-    if categoria != "Seleziona...":
-        sotto_opzioni = struttura_menu[categoria]
-        label_specifica = st.selectbox("Specifica il reato:", list(sotto_opzioni.keys()))
-        codice_finale = sotto_opzioni[label_specifica]
-    else:
-        st.selectbox("Specifica il reato:", ["Prima seleziona una categoria"], disabled=True)
-        codice_finale = None
-
-# 6. VISUALIZZAZIONE RISULTATI
-if codice_finale:
-    dati = database_reati[codice_finale]
-    
+if codice_scelto:
+    dati = database_reati[codice_scelto]
     st.divider()
     
-    # Header del Reato
-    st.markdown(f"## {dati['titolo']}")
+    st.error(f"### Reato Riconosciuto: {dati['titolo']}")
+    st.write(f"**Identikit del caso:** {dati['identikit']}")
     
-    # Layout a schede
-    tab1, tab2, tab3 = st.tabs(["📄 Analisi Legale", "⚖️ Pene e Aggravanti", "📊 Comparazione Gravità"])
+    t1, t2, t3 = st.tabs(["🛠️ Soluzione Tecnica", "👮 Procedura Legale", "🛡️ Prevenzione"])
     
-    with tab1:
-        st.error("### Fattispecie:")
-        st.write(dati['note'])
-        if query and query.lower() in dati['note'].lower():
-            st.success(f"Trovata corrispondenza per la tua ricerca: '{query}'")
-
-    with tab2:
-        # Recupero la multa dal database o metto un default se manca la chiave
-        valore_multa = dati.get('multa', "Non prevista")
-
-        col_m1, col_m2 = st.columns(2)
-        
-        with col_m1:
-            # Titolo per la Reclusione
-            st.markdown("<h2 style='color: #E74C3C; font-size: 35px;'>⛓️ Reclusione</h2>", unsafe_allow_html=True)
-            st.markdown(f"<p style='font-size: 28px; font-weight: bold;'>{dati['pena_base']}</p>", unsafe_allow_html=True)
-        
-        with col_m2:
-            # Titolo per la Multa
-            st.markdown("<h2 style='color: #2ECC71; font-size: 35px;'>💰 Multa</h2>", unsafe_allow_html=True)
-            st.markdown(f"<p style='font-size: 28px; font-weight: bold;'>{valore_multa}</p>", unsafe_allow_html=True)
-        
-        st.markdown("---")
-        st.markdown("#### ⚖️ Valutazione Aggravanti")
-        agg_ia = st.checkbox("Il reato è stato facilitato da algoritmi di IA?")
-        agg_pub = st.checkbox("È coinvolto un ente della Pubblica Amministrazione?")
-        
-        if agg_ia:
-            st.warning("⚠️ **Nota AI Act:** L'uso di IA comporta l'aggravante Art. 61 c.p. con possibile aumento della pena e della multa.")
-        if agg_pub:
-            st.warning("⚠️ **Danno Pubblico:** La pena può subire incrementi significativi per danno a sistemi di pubblica utilità.")
-
-    with tab3:
-        # Grafico comparativo semplice
-        df_chart = pd.DataFrame({
-            "Reato": [dati['titolo'], "Media Reati Cyber"],
-            "Indice Gravità": [dati['gravita'], 5]
-        })
-        st.bar_chart(df_chart.set_index("Reato"))
-        st.caption("L'indice di gravità è calcolato in base agli anni massimi di reclusione previsti.")
-
+    with t1:
+        for s in dati['soluzione']:
+            st.write(f"- {s}")
+            
+    with t2:
+        st.info(dati['denuncia'])
+        if st.button("Copia Bozza Denuncia"):
+            st.code(f"Oggetto: Denuncia per {dati['titolo']}\nIl sottoscritto espone che...")
+            
+    with t3:
+        st.success(dati['prevenzione'])
 else:
-    # Se l'utente usa la barra di ricerca ma non ha selezionato dai menu
-    if query:
-        st.markdown("### Risultati della ricerca:")
-        for k, v in database_reati.items():
-            if query.lower() in v['titolo'].lower() or query.lower() in v['note'].lower():
-                st.write(f"- **{v['titolo']}** (Codice: {k})")
-    else:
-        st.info("Benvenuto. Seleziona una categoria o usa la barra di ricerca a sinistra per analizzare un reato.")
-
-
-
-
-
-
-
-
-
+    st.info("Benvenuto. Scegli un'opzione per analizzare il caso e ricevere istruzioni.")
