@@ -145,6 +145,22 @@ with st.sidebar:
     elif score <= 2: st.warning("🟡 ELEVATO"); st.progress(50)
     elif score == 3: st.info("🔵 QUASI AL SICURO"); st.progress(75)
     else: st.success("🟢 RIPRISTINATA"); st.progress(100)
+
+    with st.expander("📖 Glossario Tecnico"):
+        st.markdown("<p class='glossario-title'>2FA (Autenticazione a 2 fattori)</p>", unsafe_allow_html=True)
+        st.write("Metodo che richiede due prove di identità (es. password + codice SMS).")
+        
+        st.markdown("<p class='glossario-title'>Phishing / Smishing</p>", unsafe_allow_html=True)
+        st.write("Truffe via email o SMS che usano link falsi per rubare dati bancari.")
+        
+        st.markdown("<p class='glossario-title'>Log</p>", unsafe_allow_html=True)
+        st.write("Registro cronologico delle operazioni effettuate da un computer o server.")
+        
+        st.markdown("<p class='glossario-title'>CNAIPIC</p>", unsafe_allow_html=True)
+        st.write("Centro nazionale per il contrasto dei crimini informatici sulle infrastrutture critiche.")
+        
+        st.markdown("<p class='glossario-title'>Deepfake</p>", unsafe_allow_html=True)
+        st.write("Video o audio generati dall'IA che imitano perfettamente persone reali.")
     
     if st.button("🔄 Reset Totale"): st.rerun()
 
@@ -205,4 +221,5 @@ else:
 
 st.markdown("---")
 st.caption("Nota: Questo strumento ha scopo informativo. In caso di reato, consulta sempre un legale o la Polizia Postale.")
+
 
