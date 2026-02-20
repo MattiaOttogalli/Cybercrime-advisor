@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS per forzare l'aggiornamento visivo e migliorare il design
+# CSS
 st.markdown("""
     <style>
     .main { background-color: #f4f7f6; }
@@ -30,103 +30,115 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 
-# 2. DATABASE COMPLETO (Tutti i reati con Pene e Azioni Legali)
+# 2. DATABASE COMPLETO
 database_reati = {
     '615-ter': {
         'titolo': "Accesso abusivo ad un sistema informatico protetto",
-        'tags': ["hacker", "password", "profilo", "account", "intrusione", "email", "social"],
+        'tags': ["hacker", "password", "profilo", "account", "intrusione", "email", "social", "instagram"],
         'soluzione': ["Cambia password immediatamente", "Attiva 2FA", "Disconnetti dispositivi sospetti"],
-        'azione_legale': "Raccogli gli screenshot delle notifiche di accesso e gli ID delle sessioni sospette. Presenta querela entro 90 giorni.",
+        'azione_legale': "Raccogli screenshot delle notifiche di accesso e gli ID delle sessioni. Presenta querela entro 90 giorni.",
         'pena': "Reclusione fino a 3 anni. Se il sistema è di interesse pubblico, da 1 a 5 anni.",
+        'articolo': "Art. 615-ter c.p.",
         'prevenzione': "Usa password complesse e un Password Manager."
     },
     '615-aggravato': {
         'titolo': "Accesso abusivo da parte di Pubblico Ufficiale",
-        'tags': ["pubblico ufficiale", "polizia", "comune", "abuso potere"],
+        'tags': ["pubblico ufficiale", "polizia", "comune", "abuso potere", "database statale"],
         'soluzione': ["Richiedi un audit interno se l'accesso è avvenuto in ambito istituzionale."],
-        'azione_legale': "Richiedi un audit interno formale all'ente di appartenenza. Allega alla querela le prove del danno o della violazione della privacy.",
-        'pena': "Reclusione da 1 a 5 anni (Aggravante specifica per la qualifica del soggetto).",
-        'prevenzione': "Monitoraggio rigoroso dei log di accesso nei sistemi della PA."
+        'azione_legale': "Richiedi un audit interno all'ente. Identifica il database violato e porta le prove dell'abuso.",
+        'pena': "Reclusione da 1 a 5 anni (pena aumentata per la qualifica del soggetto).",
+        'articolo': "Art. 615-ter, comma 2, n. 1 c.p.",
+        'prevenzione': "Monitoraggio rigoroso degli accessi ai database sensibili."
     },
     '635-bis': {
         'titolo': "Danneggiamento di dati, informazioni o programmi",
-        'tags': ["virus", "malware", "file cancellati", "ransomware", "criptati"],
+        'tags': ["virus", "malware", "file cancellati", "ransomware", "criptati", "dati persi"],
         'soluzione': ["Isola il dispositivo", "Tenta ripristino da backup offline", "Non pagare riscatti"],
-        'azione_legale': "Salva i file danneggiati su supporto esterno. Ottieni una perizia informatica che attesti l'alterazione dei dati.",
+        'azione_legale': "Non formattare il dispositivo. Salva i file danneggiati su supporto esterno. Ottieni una perizia informatica.",
         'pena': "Reclusione da 2 a 6 anni.",
+        'articolo': "Art. 635-bis c.p.",
         'prevenzione': "Effettua backup periodici su dischi non collegati alla rete."
     },
     '635-ter': {
         'titolo': "Danneggiamento di sistemi di Pubblica Utilità",
         'tags': ["ospedale", "energia", "trasporti", "infrastruttura", "luce", "acqua"],
         'soluzione': ["Attivazione immediata del piano di Business Continuity."],
-        'azione_legale': "Segnala l'incidente al CNAIPIC. Documenta l'interruzione del servizio e coordina la denuncia con l'ufficio legale.",
+        'azione_legale': "Segnala l'incidente al CNAIPIC. Documenta l'interruzione del servizio pubblico.",
         'pena': "Reclusione da 3 a 8 anni.",
-        'prevenzione': "Segregazione delle reti industriali (OT) da quelle IT."
+        'articolo': "Art. 635-ter c.p.",
+        'prevenzione': "Segregazione delle reti industriali (OT) da quelle amministrative (IT)."
     },
     '635-quater': {
         'titolo': "Danneggiamento di sistemi informatici o telematici",
         'tags': ["rete bloccata", "server down", "dos", "ddos", "rallentamento"],
         'soluzione': ["Analisi del traffico per filtrare attacchi DDoS", "Potenziamento firewall"],
-        'azione_legale': "Documenta il downtime tramite log del server. Raccogli prove degli indirizzi IP sorgente dell'attacco.",
+        'azione_legale': "Documenta il periodo di inattività (downtime) tramite log del server.",
         'pena': "Reclusione da 2 a 6 anni.",
+        'articolo': "Art. 635-quater c.p.",
         'prevenzione': "Uso di sistemi anti-DDoS e bilanciamento del carico."
     },
     '640': {
         'titolo': "Truffa Online (Generica)",
-        'tags': ["finto annuncio", "truffa", "inganno", "venditore falso", "raggiro"],
+        'tags': ["finto annuncio", "truffa", "inganno", "venditore falso", "raggiro", "vinted", "subito"],
         'soluzione': ["Interrompi ogni contatto", "Segnala il profilo alla piattaforma"],
-        'azione_legale': "Salva chat, annuncio e prova del pagamento. Non cancellare il profilo del venditore anche se scompare.",
+        'azione_legale': "Salva chat, annuncio e prova del pagamento. Non cancellare il profilo del venditore.",
         'pena': "Reclusione da 6 mesi a 3 anni e multa da 51€ a 1.032€.",
+        'articolo': "Art. 640 c.p.",
         'prevenzione': "Verifica recensioni e usa solo metodi di pagamento protetti."
     },
     '640-bis': {
         'titolo': "Truffa aggravata per erogazioni pubbliche",
-        'tags': ["bonus", "finanziamento", "stato", "inps", "agevolazioni"],
+        'tags': ["bonus", "finanziamento", "stato", "inps", "agevolazioni", "indebito"],
         'soluzione': ["Rettifica immediata presso l'ente erogatore."],
-        'azione_legale': "Prepara tutta la documentazione inviata. Se l'errore è involontario, procedi con un ravvedimento operoso.",
+        'azione_legale': "Prepara tutta la documentazione inviata. Se l'errore è involontario, procedi con ravvedimento operoso.",
         'pena': "Reclusione da 2 a 7 anni.",
-        'prevenzione': "Verifica dei requisiti prima di inoltrare istanze telematiche."
+        'articolo': "Art. 640-bis c.p.",
+        'prevenzione': "Verifica scrupolosa dei requisiti prima di inoltrare istanze."
     },
     '640-ter': {
         'titolo': "Frode informatica (Bancaria)",
-        'tags': ["soldi rubati", "conto svuotato", "banca", "phishing", "smishing"],
-        'soluzione': ["Blocca conti e carte", "Disconosci le operazioni presso la banca"],
-        'azione_legale': "Stampa l'estratto conto. Recati in banca per il disconoscimento formale e allega copia della denuncia.",
+        'tags': ["soldi rubati", "conto svuotato", "banca", "phishing", "smishing", "bonifico"],
+        'soluzione': ["Blocca conti e carte", "Disconosci le operazioni"],
+        'azione_legale': "Stampa l'estratto conto. Recati in banca per il disconoscimento formale e allega denuncia.",
         'pena': "Reclusione da 2 a 6 anni e multa da 600€ a 3.000€.",
+        'articolo': "Art. 640-ter c.p.",
         'prevenzione': "Non cliccare mai su link in SMS o email bancarie sospette."
     },
     '648-bis': {
         'titolo': "Riciclaggio di beni informatici",
-        'tags': ["pulizia soldi", "denaro sporco", "prestanome", "money mule"],
-        'soluzione': ["Blocco dei flussi sospetti e segnalazione al responsabile."],
-        'azione_legale': "Identifica l'origine dei fondi. Se coinvolto come 'Money Mule', collabora con le autorità per dimostrare il raggiro.",
+        'tags': ["pulizia soldi", "denaro sporco", "prestanome", "crypto", "money mule"],
+        'soluzione': ["Blocco dei flussi sospetti e segnalazione interna."],
+        'azione_legale': "Identifica l'origine dei fondi. Se coinvolto come 'Money Mule', collabora subito con le autorità.",
         'pena': "Reclusione da 4 a 12 anni e multa da 5.000€ a 25.000€.",
-        'prevenzione': "Verifica dell'identità delle controparti nelle transazioni."
+        'articolo': "Art. 648-bis c.p.",
+        'prevenzione': "Procedure KYC (Know Your Customer) rigorose."
     },
-    '648-ter': {
+    '648-ter.1': {
         'titolo': "Autoriciclaggio",
-        'tags': ["reinvestimento", "denaro illecito", "azienda", "crypto"],
+        'tags': ["reinvestimento", "denaro illecito", "azienda", "crypto reinvestite"],
         'soluzione': ["Analisi dei flussi finanziari interni."],
-        'azione_legale': "Identifica i flussi di denaro reinvestiti. Dimostra che l'uso dei beni non ha ostacolato l'identificazione della provenienza.",
+        'azione_legale': "Identifica i flussi di denaro reinvestiti in attività economiche o finanziarie.",
         'pena': "Reclusione da 2 a 8 anni e multa da 5.000€ a 25.000€.",
-        'prevenzione': "Sistemi di tracciamento finanziario trasparenti."
+        'articolo': "Art. 648-ter.1 c.p.",
+        'prevenzione': "Tracciamento finanziario trasparente."
     },
     '491-bis': {
         'titolo': "Falsità in un documento informatico",
-        'tags': ["firma rubata", "documento falso", "pec falsa", "firma digitale"],
+        'tags': ["firma rubata", "documento falso", "pec falsa", "firma digitale", "spid"],
         'soluzione': ["Revoca certificati di firma digitale", "Segnala al provider"],
-        'azione_legale': "Revoca il certificato. Richiedi ai gestori i log di utilizzo della firma per dimostrare l'uso abusivo.",
-        'pena': "Pene equiparate a quelle per i falsi in atti cartacei (Art. 476 ss. c.p.).",
-        'prevenzione': "Proteggi i token di firma con PIN complessi."
+        'azione_legale': "Richiedi al gestore (Aruba/InfoCert) i log di utilizzo della firma per provare l'uso abusivo.",
+        'pena': "Pene previste per il falso in atti pubblici (Art. 476 ss. c.p.).",
+        'articolo': "Art. 491-bis c.p.",
+        'prevenzione': "Proteggi i token di firma con PIN complessi e biometria."
     },
     'AI-insidioso': {
-        'titolo': "Reato commesso tramite IA (AI Act 2026)",
+        'titolo': "Reato commesso tramite IA (AI Act)",
         'tags': ["deepfake", "ia", "intelligenza artificiale", "audio falso", "video manipolato"],
         'soluzione': ["Uso di software di rilevamento Synthetic Media."],
-        'azione_legale': "Documenta la natura 'sintetica' del file. Indica l'uso di IA per l'applicazione delle aggravanti (Art. 61 n. 11-undecies).",
-        'pena': "Aggravante specifica che aumenta la pena del reato base.",
-        'prevenzione': "Verifica le richieste insolite attraverso un secondo canale sicuro."
+        'azione_legale': "Documenta la natura 'sintetica' del file. Indica l'uso di IA per l'applicazione delle aggravanti.",
+        'pena': "Aumento di pena fino a un terzo rispetto alla pena base del reato commesso.",
+        'articolo': "Art. 61 n. 11-undecies c.p. (Aggravante IA)",
+        'prevenzione': "Verifica le richieste insolite via audio/video tramite un secondo canale sicuro."
     }
 }
 
@@ -204,11 +216,11 @@ if query:
                 bozza = f"AL RESPONSABILE DELLA POLIZIA POSTALE\n\nIl sottoscritto espone quanto segue: ho riscontrato anomalie riconducibili al reato di {res['titolo']}.\nAzioni effettuate: {res['soluzione'][0]}.\nResto a disposizione per fornire le prove digitali raccolte."
                 st.code(bozza, language="text")
         
-        with tab3:
+       with tab3:
             st.subheader("⚖️ Quadro Sanzionatorio")
-            # Titolo grande per la pena
+            st.markdown(f"<p style='color: #6c757d; font-size: 18px;'>Riferimento Normativo: <b>{res['articolo']}</b></p>", unsafe_allow_html=True)
             st.markdown(f"<h2 style='color: #E74C3C; font-size: 35px;'>Pena Prevista</h2>", unsafe_allow_html=True)
-            st.markdown(f"<p style='font-size: 28px; font-weight: bold;'>{res['pena']}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size: 26px; font-weight: bold;'>{res['pena']}</p>", unsafe_allow_html=True)
         
         with tab4:
             st.subheader("🛡️ Misure di Prevenzione")
@@ -221,5 +233,6 @@ else:
 
 st.markdown("---")
 st.caption("Nota: Questo strumento ha scopo informativo. In caso di reato, consulta sempre un legale o la Polizia Postale.")
+
 
 
