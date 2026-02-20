@@ -216,7 +216,7 @@ if query:
                 bozza = f"AL RESPONSABILE DELLA POLIZIA POSTALE\n\nIl sottoscritto espone quanto segue: ho riscontrato anomalie riconducibili al reato di {res['titolo']}.\nAzioni effettuate: {res['soluzione'][0]}.\nResto a disposizione per fornire le prove digitali raccolte."
                 st.code(bozza, language="text")
         
-       with tab3:
+        with tab3:
             st.subheader("⚖️ Quadro Sanzionatorio")
             st.markdown(f"<p style='color: #6c757d; font-size: 18px;'>Riferimento Normativo: <b>{res['articolo']}</b></p>", unsafe_allow_html=True)
             st.markdown(f"<h2 style='color: #E74C3C; font-size: 35px;'>Pena Prevista</h2>", unsafe_allow_html=True)
@@ -233,6 +233,7 @@ else:
 
 st.markdown("---")
 st.caption("Nota: Questo strumento ha scopo informativo. In caso di reato, consulta sempre un legale o la Polizia Postale.")
+
 
 
 
